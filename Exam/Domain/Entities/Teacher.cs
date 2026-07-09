@@ -9,5 +9,6 @@ public class Teacher : Auditable
     public string Password { get; set; }
     public string Email { get; set; }
     public IEnumerable<Group> Groups { get; set; }
+
     
 }
