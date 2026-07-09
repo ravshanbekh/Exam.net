@@ -1,14 +1,11 @@
-﻿using Exam.Domain.Configuration;
+﻿namespace Exam.Service.DTOs.Student;
 
-namespace Exam.Domain.Entities;
-
-public class Student : Auditable
+public class StudentCreationDto
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
     public int Score { get; set; }
-    public IEnumerable<StudentGroup> StudentGroups { get; set; }
-
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

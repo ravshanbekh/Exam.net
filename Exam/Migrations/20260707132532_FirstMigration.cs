@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -16,8 +15,7 @@ namespace Exam.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
@@ -35,8 +33,7 @@ namespace Exam.Migrations
                 name: "Teachers",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
@@ -53,11 +50,11 @@ namespace Exam.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Room = table.Column<string>(type: "text", nullable: false),
+                    TeacherId1 = table.Column<Guid>(type: "uuid", nullable: false),
                     TeacherId = table.Column<long>(type: "bigint", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -66,20 +63,22 @@ namespace Exam.Migrations
                 {
                     table.PrimaryKey("PK_Groups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Groups_Teachers_TeacherId",
-                        column: x => x.TeacherId,
+                        name: "FK_Groups_Teachers_TeacherId1",
+                        column: x => x.TeacherId1,
                         principalTable: "Teachers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "StudentGroups",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     GroupId = table.Column<long>(type: "bigint", nullable: false),
+                    GroupId1 = table.Column<Guid>(type: "uuid", nullable: false),
                     StudentID = table.Column<long>(type: "bigint", nullable: false),
+                    StudentId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -87,33 +86,33 @@ namespace Exam.Migrations
                 {
                     table.PrimaryKey("PK_StudentGroups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StudentGroups_Groups_GroupId",
-                        column: x => x.GroupId,
+                        name: "FK_StudentGroups_Groups_GroupId1",
+                        column: x => x.GroupId1,
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StudentGroups_Students_StudentID",
-                        column: x => x.StudentID,
+                        name: "FK_StudentGroups_Students_StudentId",
+                        column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Groups_TeacherId",
+                name: "IX_Groups_TeacherId1",
                 table: "Groups",
-                column: "TeacherId");
+                column: "TeacherId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentGroups_GroupId",
+                name: "IX_StudentGroups_GroupId1",
                 table: "StudentGroups",
-                column: "GroupId");
+                column: "GroupId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentGroups_StudentID",
+                name: "IX_StudentGroups_StudentId",
                 table: "StudentGroups",
-                column: "StudentID");
+                column: "StudentId");
         }
 
         /// <inheritdoc />

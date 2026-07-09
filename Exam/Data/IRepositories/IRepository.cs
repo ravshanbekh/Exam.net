@@ -6,7 +6,7 @@ public interface IRepository<TEntity>
 {
     Task<TEntity> InsertAsync(TEntity entity);
     Task<TEntity> ModifyAsync(TEntity entity);
-    Task<bool> RemoveAsync(long id);
-    Task<TEntity> SelectByIdAsync(long id);
-    Task<IEnumerable<TEntity>> SelectAllAsync();
+    Task<bool> RemoveAsync(Guid id);
+    Task<TEntity> SelectByIdAsync(Guid id);
+    IQueryable<TEntity> RetrieveAll();
 }

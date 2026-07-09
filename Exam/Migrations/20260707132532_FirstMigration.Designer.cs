@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Exam.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260702131025_FirstMigration")]
+    [Migration("20260707132532_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -27,11 +27,9 @@ namespace Exam.Migrations
 
             modelBuilder.Entity("Exam.Domain.Entities.Group", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -51,23 +49,24 @@ namespace Exam.Migrations
                     b.Property<long?>("TeacherId")
                         .HasColumnType("bigint");
 
+                    b.Property<Guid>("TeacherId1")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("TeacherId1");
 
                     b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("Exam.Domain.Entities.Student", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -101,11 +100,9 @@ namespace Exam.Migrations
 
             modelBuilder.Entity("Exam.Domain.Entities.StudentGroup", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -113,28 +110,32 @@ namespace Exam.Migrations
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
 
+                    b.Property<Guid>("GroupId1")
+                        .HasColumnType("uuid");
+
                     b.Property<long>("StudentID")
                         .HasColumnType("bigint");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupId1");
 
-                    b.HasIndex("StudentID");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("StudentGroups");
                 });
 
             modelBuilder.Entity("Exam.Domain.Entities.Teacher", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -167,7 +168,9 @@ namespace Exam.Migrations
                 {
                     b.HasOne("Exam.Domain.Entities.Teacher", "Teacher")
                         .WithMany("Groups")
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });
@@ -176,13 +179,13 @@ namespace Exam.Migrations
                 {
                     b.HasOne("Exam.Domain.Entities.Group", "Group")
                         .WithMany("StudentGroups")
-                        .HasForeignKey("GroupId")
+                        .HasForeignKey("GroupId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Exam.Domain.Entities.Student", "Student")
                         .WithMany("StudentGroups")
-                        .HasForeignKey("StudentID")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

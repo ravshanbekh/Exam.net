@@ -11,30 +11,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        IRepository<Teacher> teacherRepository = new Repository<Teacher>();
-
-        teacherRepository.InsertAsync(new Teacher
-        {
-            Id = 1,
-            FirstName = "Test",
-            LastName = "Test",
-            Email = "test@example.com",
-            Groups = [],
-            Password = "password",
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        });
-
-        IRepository<Group> groupRepository = new Repository<Group>();
-
-        groupRepository.InsertAsync(new Group
-        {
-            Id = 1,
-            Name = "Group 1",
-            TeacherId = 1,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        });
+        
     }
 }
 

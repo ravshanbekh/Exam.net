@@ -11,6 +11,6 @@ public class AppDbContext:DbContext
     public DbSet<StudentGroup> StudentGroups { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Database=ExamR1;Username=postgres;Password=1234");
+        optionsBuilder.UseNpgsql("Host=localhost;Database=ExamR1_v1;Username=postgres;Password=1234");
     }
 }

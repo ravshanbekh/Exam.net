@@ -9,5 +9,5 @@ public class Group:Auditable
     public string Room { get; set; }
     public Teacher Teacher { get; set; }
     public long? TeacherId { get; set; }
-    public List<StudentGroup> StudentGroups { get; set; }
+    public IEnumerable<StudentGroup> StudentGroups { get; set; }
 }
